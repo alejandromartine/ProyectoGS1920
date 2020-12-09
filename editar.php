@@ -1,14 +1,23 @@
 <?php  
+	session_start();
+
 	if (!isset($_GET['id'])) {
 		header('Location: index.php');
 	}
-	require 'conexion.php';
+	//ESTAS LINEAS IMPIDEN QUE LAS PERSONAS NO LOGEADAS PUEDAN ACCEDER
+	if (!isset($_SESSION['email'])) {
+		header('Location: login_usuarios.php');
+	}elseif ($_SESSION['email']) {
+		require 'conexion.php';
 
-	$id = $_GET['id'];
+		$id = $_GET['id'];
 
-	$sentencia = $bd->prepare("SELECT * FROM usuarios WHERE id =?");
-	$resultado = $sentencia->execute([$id]);
-	$usuario = $sentencia->fetch(PDO::FETCH_OBJ);
+		$sentencia = $bd->prepare("SELECT * FROM usuarios WHERE id =?");
+		$resultado = $sentencia->execute([$id]);
+		$usuario = $sentencia->fetch(PDO::FETCH_OBJ);
+	}else{
+		echo "ERROR";
+	}
 
 ?>
 

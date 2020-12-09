@@ -18,7 +18,7 @@
 	$resultado = $sentencia->execute([$contrasena, $nombre, $apellidos, $email, $edad, $ciudad, $id]);
 
 	if ($resultado === true) {
-		header('Location: index.php');
+		header('Location: login_usuarios.php');
 	}else{
 		echo "error al editar el usuario";
 	}

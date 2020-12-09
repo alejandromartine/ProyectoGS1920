@@ -1,85 +1,66 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>USUARIOS</title>
-</head>
-<body>
-	<?php 
-		include 'conexion.php';
+<?php 
+
+	session_start();
+	include 'cabecera_logued.php';
+	include 'conexion.php';
+	$email = $_SESSION['email'];
+	//CONSULTAMOS SI EL DATO INTRODUCIDO POR EL LOGIN ESTA EN LA BASE DE DATOS USUARIOS
+	$requisito = $bd->query("SELECT email FROM usuarios WHERE email = '$email'");
+	//RECOGEMOS EL DATO APORTADO POR LA CONSULTA EN CASO DE NO EXISTIR SERIA VACIO
+	$r_entrada = $requisito->fetch(PDO::FETCH_ASSOC);
+	//CONVERTIMOS EL DATO QUE APARECE EN UN ARRAY EN STRING
+	$string = implode($r_entrada);
+
+
+	//SI EL STRING RECIBIDO COINCIDE CON EL EMAIL APORTADO SE INICIA SESION EN EL IDEX DE ADMINISTRACIÓN, EN CASO DE SER UN USUARIO SE LE REDIRIGE AL INDEX CLIENTES, SI NO ESTA EN NINGUNA DE LAS DOS EN EL APARTADO LOGIN USUARIOS SE LE INDICA QUE NO EXISTE EL USUARIO.
+	if ($string===$email) {
 		$usuarios = $bd->query("SELECT * FROM usuarios;");
 		$resultado = $usuarios-> fetchAll(PDO::FETCH_OBJ);
-		//print_r($resultado);
-	?>
+	}else {
+		header('Location: index_clientes.php');
+	}
+
+
+?>
+
+
+
 	<div>
 		<center>
+			<h1>Bienvenido: <?php echo$_SESSION['nombre']; ?> <?php echo$_SESSION['apellidos']; ?> </h1>
 			<h3>LISTADO DE USUARIOS</h3>
-			<table>
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>CONTRASEÑA</th>
-						<th>NOMBRE</th>
-						<th>APELLIDOS</th>
-						<th>EMAIL</th>
-						<th>EDAD</th>
-						<th>CIUDAD</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php  
-					foreach ($resultado as $dato){
-					 ?>
-					<tr>
-						<td><?php echo $dato->id; ?></td>
-						<td><?php echo $dato->contrasena; ?></td>
-						<td><?php echo $dato->nombre; ?></td>
-						<td><?php echo $dato->apellidos; ?></td>
-						<td><?php echo $dato->email; ?></td>
-						<td><?php echo $dato->edad; ?></td>
-						<td><?php echo $dato->ciudad; ?></td>
-						<td><a href="editar.php?id=<?php echo $dato->id; ?>">Editar</a></td>
-						<td><a href="eliminar.php?id=<?php echo $dato->id; ?>">Eliminar</a></td>
-					</tr>
-						<?php } ?>
-	 			</tbody>
-			</table>
-			<!-- APARTADO DE CREAR -->
-			<hr>
-			<h3>INSERTAR DATOS</h3>
-			<form method="POST" action="create.php">
-				<table>
-					<tr>
-						<td>Contraseña: </td>
-						<td><input type="text" name="contraseña"></td>
-					</tr>
-					<tr>	
-						<td>Nombre: </td>
-						<td><input type="text" name="nombre"></td>
-					</tr>
-					<tr>	
-						<td>Apellidos: </td>	
-						<td><input type="text" name="apellidos"></td>
-					</tr>
-					<tr>	
-						<td>Email: </td>
-						<td><input type="text" name="email"></td>
-					</tr>
-					<tr>	
-						<td>Edad: </td>
-						<td><input type="text" name="edad"></td>
-					</tr>	
-					<tr>
-						<td>Ciudad: </td>
-						<td><input type="text" name="ciudad"></td>
-					</tr>
-					<input type="hidden" name="oculto" value="1">
-					<tr>
-						<td><input type="reset" name=""></td>
-						<td><input type="submit" value="Añadir usuario"></td>
-					</tr>
+			<div class="table-responsive-sm">
+				<table class="table table-bordered">
+					<thead class="thead-dark">
+						<tr>
+							<th>ID</th>
+							<th>CONTRASEÑA</th>
+							<th>NOMBRE</th>
+							<th>APELLIDOS</th>
+							<th>EMAIL</th>
+							<th>EDAD</th>
+							<th>CIUDAD</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php  
+						foreach ($resultado as $dato){
+						 ?>
+						<tr>
+							<td><?php echo $dato->id; ?></td>
+							<td><?php echo $dato->contrasena; ?></td>
+							<td><?php echo $dato->nombre; ?></td>
+							<td><?php echo $dato->apellidos; ?></td>
+							<td><?php echo $dato->email; ?></td>
+							<td><?php echo $dato->edad; ?></td>
+							<td><?php echo $dato->ciudad; ?></td>
+							<td><a href="editar.php?id=<?php echo $dato->id; ?>"><i class="material-icons">&#xe254;</i></a></td>
+							<td><a href="eliminar.php?id=<?php echo $dato->id; ?>"><i class="material-icons" style="color: red">&#xe92b;</i></a></td>
+						</tr>
+							<?php } ?>
+		 			</tbody>
 				</table>
-			</form>
-			<!-- APARTADO DE CREAR FIN -->
+			</div>
 		</center>	
 	</div>
 
