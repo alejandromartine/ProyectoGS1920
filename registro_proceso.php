@@ -6,7 +6,10 @@
 	//LLAMA AL ARCHIVO QUE CONECTA CON LA BASE DE DATOS
 	require 'conexion.php';
 	//SE ALMACENAN LOS DATOS INTRODUCIDOS EN EL FORMULARIO.
-	$contrasena = $_POST['contrasena'];
+	$pass = $_POST['contrasena'];
+	//CIFRADO DE CONTRASEÑA
+	$pass_segura = password_hash($pass, PASSWORD_BCRYPT, ['cost'=>4]);
+	$contrasena = $pass_segura;
 	$nombre = $_POST['nombre'];	
 	$apellidos = $_POST['apellidos'];
 	$email = $_POST['email'];
@@ -21,7 +24,7 @@
 	if ($resultado === TRUE) {
 		header('Location: login_usuarios.php');
 	}else{
-		echo("algo ha fallado");
+		echo $contrasena;
 	}
 
  ?>
