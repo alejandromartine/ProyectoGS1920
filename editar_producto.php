@@ -72,7 +72,12 @@
         		<input class="form-check-input" type="radio" name="tipo" value="3"><b>ACCESORIOS</b>
         	</label>
         </div>
-        
+        <!-- IMAGEN -->
+        <div class="custom-file mb-3">
+          <input type="file" id="customFile" class="custom-file-input" name="img">
+          <label class="custom-file-label" for="customFile"></label>
+          
+        </div>
         
         <input type="hidden" name="oculto" value="1">
         <div class="form-group">

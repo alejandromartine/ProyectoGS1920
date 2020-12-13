@@ -1,7 +1,8 @@
 <?php 
 	include'conexion.php';
-    include'carrito.php';
-    include 'templates/cabecera.php';
+  include'carrito.php';
+  include 'cabecera.php';
+
  ?>
 
 
@@ -14,6 +15,8 @@
  		foreach ($_SESSION['CARRITO'] as $indice => $producto) {
  			$total = $total+($producto['Cantidad'] * $producto['Precio']);
  		} 
+
+  //SE REGISTRAN LOS DATOS DE LA VENTA
  		$sentencia = $bd->prepare("INSERT INTO `ventas` (`id_venta`, `claveTransaccion`, `datosPaypal`, `fecha`, `email`, `total`, `estado`) VALUES (NULL, :claveTransaccion, '', NOW(), :email, :total, 'pendiente');)");
  		//SE INSERTAN LOS DATOS AUTOMATICAMENTE DE LOS PRODUCTOS SELECCIONADOS
  		$sentencia->bindParam(":claveTransaccion", $sid);
@@ -21,6 +24,7 @@
  		$sentencia->bindParam(":total", $total);
  		$sentencia->execute();
 
+  //SE REGISTRAN LOS DETALLES DE LA VENTA 
  		$idVenta = $bd->lastInsertId();
  		foreach ($_SESSION['CARRITO'] as $indice => $producto) {
  			$sentencia = $bd->prepare("INSERT INTO `detalleventa` (`id_detalle`, `id_venta`, `id`, `preciounitario`, `cantidad`, `descargado`) VALUES (NULL, :id_venta, :id, :preciounitario, :cantidad, '0');");
@@ -36,77 +40,87 @@
  	}
   ?>
 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Include the PayPal JavaScript SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+     <style>
+        /* Media query for mobile viewport */
+        @media screen and (max-width: 400px) {
+            #paypal-button-container {
+                width: 100%;
+            }
+        }
+        
+        /* Media query for desktop viewport */
+        @media screen and (min-width: 400px) {
+            #paypal-button-container {
+                width: 250px;
+            }
+        }
+    </style>
 
     <div class="jumbotron text-center">
   		<h1 class="display-4">¡Utimo Paso!</h1>
   		<hr class="my-4">
   		<p class="lead">Estas a punto de pagar con Paypal la cantidad de:
   			<h4>€<?php echo number_format($total ,2); ?></h4>
-  			<div id="smart-button-container">
-      			<div style="text-align: center;">
-        			<div id="paypal-button-container"></div>
-      			</div>
-			</div>
-
+        	<div class="ml-auto mr-auto" id="paypal-button-container"></div>
   		</p>
-  			<p>El de talle de venta podra ser descargado una vez se haga el pago
+  			<p>El detalle de venta podra ser descargado una vez se haga el pago
   				<strong>PARA ACLARACIONES: a6310774@gmail.com</strong>
   			</p>
     </div>
 
-  <script
-    src="https://www.paypal.com/sdk/js?client-id=AfyoVPIfNMyj5kpaLJCm-_NTl1yV52O9MUVZWfbu7OazH1FjT6qjeMyp30j8YXvkHbEvuthuR6t_HFfr"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
-  </script>
-    <script src="https://www.paypal.com/sdk/js?client-id=AfyoVPIfNMyj5kpaLJCm-_NTl1yV52O9MUVZWfbu7OazH1FjT6qjeMyp30j8YXvkHbEvuthuR6t_HFfrsb&currency=EUR" data-sdk-integration-source="button-factory"></script>
-  <script>
-    function initPayPalButton() {
-      paypal.Buttons({
+
+    <script>
+        // Render the PayPal button into #paypal-button-container
+
+      paypal.Button.render({
+        // Configure environment
+        env: 'sandbox',
+        client: {
+          sandbox: 'AYz1GfAWvPF5fN_A901XIw31a6etyTia09swJsGX3Y2FElXsghM0iNJArO7JgC6GHKpa85KUS4vgZIOE',
+          production: 'demo_production_client_id'
+        },
+        // Customize button (optional)
+        locale: 'en_US',
         style: {
-          shape: 'rect',
+          label: 'checkout',
+          size: 'responsive',
           color: 'gold',
-          layout: 'vertical',
-          label: 'paypal',
-          
+          shape: 'pill',
         },
 
-        createOrder: function(data, actions) {
-          return actions.order.create({
-            purchase_units: [{"amount":{"currency_code":"EUR","value":<?php $total; ?>}}]
+        // Enable Pay Now checkout flow (optional)
+        commit: true,
+
+        // Set up a payment
+        payment: function(data, actions) {
+          return actions.payment.create({
+            payment: {  
+              transactions: [{
+                amount: {
+                  total: '<?php echo($total) ?>',
+                  currency: 'EUR'
+                },
+                description:"Compra de productos a VALHALLA:€<?php echo number_format($total ,2); ?>",
+                custom: "<?php echo $sid;?>#<?php echo openssl_encrypt($idVenta, COD, KEY); ?>"
+              }]
+            }  
           });
         },
-
-        onApprove: function(data, actions) {
-          return actions.order.capture().then(function(details) {
-            alert('Transaction completed by ' + details.payer.name.given_name + '!');
+        // Execute the payment
+        onAuthorize: function(data, actions) {
+          return actions.payment.execute().then(function() {
+            // Show a confirmation message to the buyer
+            console.log(data);
+            window.location="verificador.php?paymentToken="+data.paymentToken+"&paymentID="+data.paymentID;
           });
-        },
-
-        onError: function(err) {
-          console.log(err);
         }
-      }).render('#paypal-button-container');
-    }
-    initPayPalButton();
-  </script>
+      }, '#paypal-button-container');
+    </script>
 
-  <script>
-  paypal.Buttons({
-    createOrder: function(data, actions) {
-      // This function sets up the details of the transaction, including the amount and line item details.
-      return actions.order.create({
-        purchase_units: [{
-          amount: <?php $_POST['Cantidad']; ?>{
-            value: '<?php $total; ?>'
-          }
-        }]
-      });
-    },
-    onApprove: function(data, actions) {
-      // This function captures the funds from the transaction.
-      return actions.order.capture().then(function(details) {
-        // This function shows a transaction success message to your buyer.
-        alert('Transaction completed by ' + details.payer.name.given_name);
-      });
-    }
-  }).render('#paypal-button-container');
-</script>
+<?php include 'footer.php'; ?>
+

@@ -1,7 +1,8 @@
 <?php
-	include  'cabecera_clientes.php';
 	session_start();
-
+	
+	include  'cabecera_clientes.php';
+	
 	if (!isset($_GET['id'])) {
 		header('Location: index_clientes.php');
 	}
@@ -22,34 +23,47 @@
 
 ?>
 
-	<center>
-		<h3>Editar Usuario</h3>
-		<form method="POST" action="editar_datos_usuario.php">
-			<table>
-				<tr>	
-					<td>Nombre: </td>
-					<td><input type="text" name="nombre"value="<?php echo $cliente->nombre_cliente ?>"></td>
-				</tr>
-				<tr>	
-					<td>Apellidos: </td>	
-					<td><input type="text" name="apellidos"value="<?php echo $cliente->apellidos ?>"></td>
-				</tr>
-				<tr>	
-					<td>Email: </td>
-					<td><input type="text" name="email"value="<?php echo $cliente->email_cliente ?>"></td>
-				</tr>
-				<tr>	
-					<td><label>Telefono: </label> </td>
-					<td><input type="text" name="telefono"value="<?php echo $cliente->telefono_cliente ?>"></td>
-				</tr>	
-				<tr>
-				<tr>
-					<td><input type="hidden" name="oculto"></td>
-					<input type="hidden" name="id2" value=" <?php echo $cliente->id_cliente; ?>">
-					<td colspan="2"><a href="index_clientes"><i style='font-size:24px' class='fas'>&#xf060;</i> Volver</a> <input type="submit" value="Editar"></td>
-				</tr>
-			</table>
-		</form>
-	</center>
-</body>
-</html>
+	<div class="container login-container ">
+		<ul class="breadcrumb">
+    		<li class="breadcrumb-item"><a href="index_clientes.php">Inicio</a></li>
+   			<li class="breadcrumb-item active">Cambio datos</li>
+  		</ul>
+		<div class="row">
+			<div id="login" class="col-md-12 login-form-1">
+				<h3>Editar Usuario</h3>
+				<form method="POST" action="editar_datos_usuario.php">
+					<div class="form-group">	
+						<label for="nombre"><b>Nombre:</b></label>
+						<input type="text" class="form-control"name="nombre"value="<?php echo $cliente->nombre_cliente ?>">
+					</div>
+					<p id="error_nombre" class="text-danger"></p>
+
+					<div class="form-group">	
+						<label for="apellidos"><b>Apellidos:</b></label>	
+						<input type="text" class="form-control"name="apellidos"value="<?php echo $cliente->apellidos ?>">
+					</div>
+					<p id="error_apellidos"class="text-danger"></p>	
+
+					<div class="form-group">	
+						<label for="email"><b>Email:</b></label>
+						<input type="text"class="form-control" name="email"value="<?php echo $cliente->email_cliente ?>">
+					</div>
+					<p id="error_email" class="text-danger"></p>
+
+					<div class="form-group">	
+						<label><b>Telefono: </b></label>
+						<input type="text" class="form-control"name="telefono"value="<?php echo $cliente->telefono_cliente ?>">
+					</div>
+						<p id="error_telefono"class="text-danger"></p>
+
+							<input type="hidden"class="form-control" name="oculto">
+							<input type="hidden" class="form-control"name="id2" value=" <?php echo $cliente->id_cliente; ?>">
+							 <div colspan="2"><a href="index_clientes"><i style='font-size:24px' class='fas'>&#xf060;</i> Volver</a> <input type="submit" class="btn btn-success" value="Editar"></div>
+						
+				</form>
+			</div>
+		</div>	
+	</div>
+	<script type="text/javascript" src="cliente_nuevo.js"></script>
+
+<?php include 'footer.php'; ?>

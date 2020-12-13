@@ -25,6 +25,10 @@
 </head>
 <body>
 	<div class="container login-container ">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="inicio.php">Inicio</a></li>
+                <li class="breadcrumb-item active">Login</li>
+            </ul>
 		<div class="row">
 			<div class="col-sm-4 mb-6"></div>
 			<div id="login" class="col-sm-4 login-form-1 ">

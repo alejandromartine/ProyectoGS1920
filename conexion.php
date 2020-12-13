@@ -1,4 +1,8 @@
 <?php
+//DEFINIMOS LOS DATOS DEL CIFRADO
+define("KEY","valhalla");
+define("COD","AES-128-ECB");
+
 //DEFINIMOS LOS DATOS DE MYSQL
 $servername	="localhost";
 $database	="mi_tienda";

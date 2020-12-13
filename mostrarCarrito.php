@@ -1,11 +1,15 @@
 <?php 
 	include'conexion.php';
     include'carrito.php';
-    include 'templates/cabecera.php';
+    include 'cabecera.php';
 
  ?>
 
  <h3>LISTA DEL CARRITO</h3>
+   <ul class="breadcrumb">
+   	<li class="breadcrumb-item"><a href="inicio.php">Inicio</a></li>
+   	<li class="breadcrumb-item active">Carrito</li>
+  </ul>
  <?php if (!empty($_SESSION['CARRITO'])) { ?>
  <table  class="table table-ligth table-border">
  	<tbody>
@@ -65,4 +69,4 @@
  <?php } ?>
  </table>
 
-<?php include 'templates/footer.php' ?>
+<?php include 'footer.php' ?>

@@ -1,5 +1,6 @@
 <?php  
 	session_start();
+	include 'cabecera_logued.php';
 	//ESTAS LINEAS IMPIDEN QUE LAS PERSONAS NO LOGEADAS PUEDAN ACCEDER
 	if (!isset($_SESSION['email'])) {
 		header('Location: login_usuarios.php');
@@ -7,22 +8,12 @@
 		
 	}
 ?>
-
-
-
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Editar Usuario</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="ESTILO.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
 <body>
 	<div class="container login-container">
+	<ul class="breadcrumb">
+    	<li class="breadcrumb-item"><a href="index.php">Index</a></li>
+    	<li class="breadcrumb-item active">Añadir empleado</li>
+  	</ul>
 	  <div class="row">
 	    <div id="login" class="col-md-12 login-form-1">
 	      <h3>Añadir Usuario Administrador</h3>
@@ -56,5 +47,4 @@
 	    </div>
 	  </div>
 	</div>
-</body>
-</html>
+<?php include 'footer.php' ?>

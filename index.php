@@ -12,7 +12,7 @@
 	$string = implode($r_entrada);
 
 
-	//SI EL STRING RECIBIDO COINCIDE CON EL EMAIL APORTADO SE INICIA SESION EN EL IDEX DE ADMINISTRACIÓN, EN CASO DE SER UN USUARIO SE LE REDIRIGE AL INDEX CLIENTES, SI NO ESTA EN NINGUNA DE LAS DOS EN EL APARTADO LOGIN USUARIOS SE LE INDICA QUE NO EXISTE EL USUARIO.
+	//SI EL STRING RECIBIDO COINCIDE CON EL EMAIL APORTADO SE INICIA SESION EN EL INDEX DE ADMINISTRACIÓN, EN CASO DE SER UN USUARIO SE LE REDIRIGE AL INDEX CLIENTES, SI NO ESTA EN NINGUNA DE LAS DOS EN EL APARTADO LOGIN USUARIOS SE LE INDICA QUE NO EXISTE EL USUARIO.
 	if ($string===$email) {
 		$usuarios = $bd->query("SELECT * FROM usuarios;");
 		$resultado = $usuarios-> fetchAll(PDO::FETCH_OBJ);
@@ -25,10 +25,9 @@
 
 
 
-	<div>
-		<center>
-			<h1>Bienvenido: <?php echo$_SESSION['nombre']; ?> <?php echo$_SESSION['apellidos']; ?> </h1>
-			<h3>LISTADO DE USUARIOS</h3>
+	<div class="container-fluid mt-3">
+		<h1>Bienvenido: <?php echo$_SESSION['nombre']; ?> <?php echo$_SESSION['apellidos']; ?> </h1>
+		<h3>LISTADO DE USUARIOS</h3>
 			<div class="table-responsive-sm">
 				<table class="table table-bordered">
 					<thead class="thead-dark">
@@ -42,7 +41,7 @@
 							<th>CIUDAD</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="myTable">
 						<?php  
 						foreach ($resultado as $dato){
 						 ?>
@@ -63,6 +62,4 @@
 			</div>
 		</center>	
 	</div>
-
-</body>
-</html>
+<?php include 'footer.php'; ?>

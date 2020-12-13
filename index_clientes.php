@@ -31,7 +31,7 @@ include 'cabecera_clientes.php';
       <p> <a href="cliente_contrasena.php?id=<?php echo $dato->id_cliente; ?>"><i class="fa fa-paper-plane" style="font-size:24px"> Cambiar contraseña</i></a></p>
       
 
-      <p> <a href="cliente_datos.php?id=<?php echo $dato->id_cliente; ?>"><i class="fa fa-paper-plane" style="font-size:24px"> Mis datos</i></a></p>
+      <p> <a href="mis_datos.php?id=<?php echo $dato->id_cliente; ?>"><i class="fa fa-paper-plane" style="font-size:24px"> Mis datos</i></a></p>
 
       <p> <a href="cliente_datos.php?id=<?php echo $dato->id_cliente; ?>"><i class="fa fa-paper-plane" style="font-size:24px"> Editar datos personales</i></a></p>
     </div>
@@ -40,6 +40,4 @@ include 'cabecera_clientes.php';
 
 </div>
 
-
-</body>
-</html>
+<?php include 'footer.php'; ?>

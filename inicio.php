@@ -1,8 +1,9 @@
 <?php 
-  include 'cabecera.php'; 
   include'conexion.php';
   include'carrito.php';
-?>
+  include 'cabecera.php';
+?> 
+
 <!-- CARRUSEL -->
 <div id="demo" class="carousel slide" data-ride="carousel">
   <ul class="carousel-indicators">
@@ -47,7 +48,7 @@
     <!-- APARTADO CACHIMBAS -->
     <h1 class="display-1 font-weigth-bold text-center mb-5"><b>CACHIMBAS</b></h1>
     </div>
-    <div class="row ">
+    <div class="row">
         <?php 
             $sentencia = $bd->prepare("SELECT id, nombre_producto, desc_producto, imagen_producto, precio_producto FROM lista_productos WHERE tipo_producto = 1");
             $sentencia->execute();
@@ -181,3 +182,4 @@
     </div>
 
 </div>
+<?php include 'footer.php'; ?>
